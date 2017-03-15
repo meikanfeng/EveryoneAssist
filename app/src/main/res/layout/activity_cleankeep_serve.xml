@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/header_title"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
+
+        <com.example.everyoneassist.Layout.PercentLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:padding="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:padding="5dp"
+                android:textSize="@dimen/text_normal"
+                android:text="内容介绍："/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:gravity="left"
+                android:textSize="@dimen/text_normal"
+                android:textColorHint="@color/deep_gray"
+                android:hint="负责办公区域卫生..."
+                app:layout_minHeightPercent="15%w"/>
+
+        </com.example.everyoneassist.Layout.PercentLinearLayout>
+
+        <com.example.everyoneassist.Layout.PercentLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:padding="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:padding="5dp"
+                android:textSize="@dimen/text_normal"
+                android:text="发布时间：2017-01-10"/>
+
+        </com.example.everyoneassist.Layout.PercentLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/deep_gray"/>
+
+        <com.example.everyoneassist.Layout.PercentLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:padding="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:padding="5dp"
+                android:textSize="@dimen/text_normal"
+                android:text="预约时间：2017-01-10"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:gravity="left"
+                android:text="需求有效期：7天"
+                android:textSize="@dimen/text_normal"
+                android:textColor="@color/black"/>
+
+        </com.example.everyoneassist.Layout.PercentLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/deep_gray"/>
+
+        <com.example.everyoneassist.Layout.PercentLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:padding="5dp"
+                android:textSize="@dimen/text_big"
+                android:text="服务要求：男.Ta来找我"/>
+
+
+        </com.example.everyoneassist.Layout.PercentLinearLayout>
+
+        <com.example.everyoneassist.Layout.PercentLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:layout_marginBottom="10dp"
+            android:padding="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:padding="5dp"
+                android:textSize="@dimen/text_big"
+                android:text="具体服务："/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:gravity="left"
+                android:textSize="@dimen/text_small"
+                android:textColorHint="@color/deep_gray"
+                android:hint="每个类别的具体服务都不一样，具体的还是参考别人的，我就不意义列出来了。"
+                app:layout_minHeightPercent="15%w"/>
+
+        </com.example.everyoneassist.Layout.PercentLinearLayout>
+
+    </LinearLayout>
+
+    <include layout="@layout/servant_introduce_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
