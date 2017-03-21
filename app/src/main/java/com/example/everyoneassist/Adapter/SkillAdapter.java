@@ -2,6 +2,7 @@ package com.example.everyoneassist.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.icu.text.NumberFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,14 @@ import android.widget.TextView;
 
 import com.example.everyoneassist.Activity.EditSkillActivity;
 import com.example.everyoneassist.Activity.SkillManagerActivity;
+import com.example.everyoneassist.Entity.Skill;
 import com.example.everyoneassist.R;
 import com.example.everyoneassist.Utils.HttpPostRequestUtils;
+import com.example.everyoneassist.Utils.TimeUtils;
 import com.example.everyoneassist.View.MyHorizontalScrollView;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by fengm on 2017/1/13.
@@ -33,19 +37,27 @@ public class SkillAdapter extends BaseAdapter implements View.OnClickListener {
         this.hprc = hprc;
     }
 
+    private List<Skill> skills;
+
+    public SkillAdapter(HttpPostRequestUtils.HttpPostRequestCallback hprc, List<Skill> skills) {
+        this.context = hprc.getContext();
+        this.hprc = hprc;
+        this.skills = skills;
+    }
+
     @Override
     public int getCount() {
-        return 2;
+        return skills.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return skills.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
@@ -60,19 +72,42 @@ public class SkillAdapter extends BaseAdapter implements View.OnClickListener {
             viewholder.close_skill = (TextView) convertView.findViewById(R.id.close_skill);
             viewholder.delete_skill = (TextView) convertView.findViewById(R.id.delete_skill);
             viewholder.imagelist = (MyHorizontalScrollView) convertView.findViewById(R.id.imagelist);
+            viewholder.skill_title = (TextView) convertView.findViewById(R.id.skill_title);
+            viewholder.skill_status = (TextView) convertView.findViewById(R.id.skill_status);
+            viewholder.skill_lx = (TextView) convertView.findViewById(R.id.skill_lx);
+            viewholder.skill_type = (TextView) convertView.findViewById(R.id.skill_type);
+            viewholder.skill_price = (TextView) convertView.findViewById(R.id.skill_price);
+            viewholder.skill_time = (TextView) convertView.findViewById(R.id.skill_time);
+            viewholder.skill_content = (TextView) convertView.findViewById(R.id.skill_content);
             convertView.setTag(viewholder);
         } else {
             viewholder = (ViewHolder) convertView.getTag();
         }
 
-        viewholder.amend_skill.setTag("11");
-        viewholder.close_skill.setTag("11");
-        viewholder.delete_skill.setTag("11");
+        Skill skill = skills.get(position);
+
+        viewholder.skill_title.setText(skill.getServer_name());
+        if ("0".equals(skill.getStatus()))
+            viewholder.skill_status.setText("等待审核");
+        else viewholder.skill_status.setText("审核通过");
+        viewholder.skill_lx.setText(skill.getServer_name());
+        viewholder.skill_type.setText(skill.getServer_name());
+
+        viewholder.skill_price.setText(Double.valueOf(skill.getSkill_price()) + "元");
+
+        String[] weeks = context.getResources().getStringArray(R.array.service_time);
+        viewholder.skill_time.setText(weeks[Integer.valueOf(skill.getServer_time())]);
+        viewholder.skill_content.setText(skill.getSkill_info());
+
+        viewholder.amend_skill.setTag(skill.getSkill_id());
+        viewholder.close_skill.setTag(skill.getSkill_id());
+        viewholder.delete_skill.setTag(skill.getSkill_id());
         viewholder.amend_skill.setOnClickListener(this);
         viewholder.close_skill.setOnClickListener(this);
         viewholder.delete_skill.setOnClickListener(this);
         viewholder.imagelist.setVisibility(View.GONE);
-//        viewholder.imagelist.setAdapter(new SkillImageAdapter(context, 2, null));
+
+        viewholder.imagelist.setAdapter(new SkillImageAdapter(context, 2, skill.getSkill_photos()));
 
         return convertView;
     }
@@ -104,7 +139,7 @@ public class SkillAdapter extends BaseAdapter implements View.OnClickListener {
     }
 
     class ViewHolder {
-        TextView amend_skill, close_skill, delete_skill;
+        TextView amend_skill, close_skill, delete_skill, skill_title, skill_status, skill_lx, skill_type, skill_price, skill_time, skill_content;
         MyHorizontalScrollView imagelist;
     }
 

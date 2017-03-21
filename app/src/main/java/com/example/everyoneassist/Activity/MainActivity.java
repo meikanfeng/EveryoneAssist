@@ -8,6 +8,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.example.everyoneassist.Adapter.MainPagerAdapter;
 import com.example.everyoneassist.Fragment.HomeFragment;
 import com.example.everyoneassist.Fragment.MeFragment;
@@ -20,27 +24,25 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
+
     private MainPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private ImageView hire;
-
     private List<Fragment> fragmentlist;
-
-    private TextView[]  textviews = new TextView[4];
+    private TextView[] textviews = new TextView[4];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+
         fragmentlist = new ArrayList<>();
         fragmentlist.add(HomeFragment.newInstance());
         fragmentlist.add(ReceivingFragment.newInstance());
         fragmentlist.add(SkillFragment.newInstance());
         fragmentlist.add(MeFragment.newInstance());
 
-        mSectionsPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(),fragmentlist);
+        mSectionsPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), fragmentlist);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -51,7 +53,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         textviews[2] = (TextView) this.findViewById(R.id.table4);
         textviews[3] = (TextView) this.findViewById(R.id.table5);
 
-        for (TextView textview : textviews){
+        for (TextView textview : textviews) {
             textview.setOnClickListener(this);
         }
 
@@ -64,10 +66,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
-
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.table1:
                 mViewPager.setCurrentItem(0);
                 break;
@@ -82,8 +83,4 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
         }
     }
-
-
-
-
 }

@@ -6,14 +6,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
+import com.alibaba.fastjson.JSON;
 import com.example.everyoneassist.Adapter.SkillAdapter;
+import com.example.everyoneassist.Entity.Skill;
 import com.example.everyoneassist.R;
 import com.example.everyoneassist.Utils.HttpPostRequestUtils;
 import com.example.everyoneassist.Utils.ScreenUtils;
 import com.example.everyoneassist.View.MyListView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.util.DensityUtil;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class SkillManagerActivity extends BaseActivity implements View.OnClickListener, HttpPostRequestUtils.HttpPostRequestCallback {
 
@@ -26,6 +32,8 @@ public class SkillManagerActivity extends BaseActivity implements View.OnClickLi
         right_img.setOnClickListener(this);
 
         initView();
+
+        getSkill();
     }
 
     private MyListView skilllistview;
@@ -34,22 +42,27 @@ public class SkillManagerActivity extends BaseActivity implements View.OnClickLi
     private void initView() {
         skilllistview = (MyListView) this.findViewById(R.id.skilllistview);
         skilllistview.setbottom(DensityUtil.dip2px(15));
-        skillAdapter = new SkillAdapter(this);
-        skilllistview.setAdapter(skillAdapter);
-
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.right_img:
-                startActivity(new Intent(this, AddSkillListActivity.class));
+                startActivity(new Intent(this, EditSkillActivity.class));
                 break;
         }
     }
 
+    private List<Skill> skills;
+
     @Override
-    public void Success(String method, JSONObject json) {
+    public void Success(String method, JSONObject json) throws JSONException {
+        if (METHOD_SKILL.equals(method)){
+            skills = JSON.parseArray(json.getString("data"), Skill.class);
+            skillAdapter = new SkillAdapter(this, skills);
+            skilllistview.setAdapter(skillAdapter);
+        }
+
 
     }
 
@@ -62,4 +75,17 @@ public class SkillManagerActivity extends BaseActivity implements View.OnClickLi
     public Context getContext() {
         return this;
     }
+
+    private final String METHOD_SKILL = "skill_list";
+
+    private void getSkill() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("act", METHOD_SKILL);
+        map.put("user_id", shared.getString("user_id",""));
+        map.put("page","1");
+        HttpPostRequestUtils.getInstance(this).Post(map);
+    }
+
+
+
 }

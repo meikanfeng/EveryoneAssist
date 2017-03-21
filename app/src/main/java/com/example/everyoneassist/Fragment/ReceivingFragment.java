@@ -1,39 +1,54 @@
 package com.example.everyoneassist.Fragment;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationClientOption.AMapLocationMode;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptor;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
 import com.example.everyoneassist.Adapter.ReceivingAdapter;
+import com.example.everyoneassist.Entity.Demand;
 import com.example.everyoneassist.R;
+import com.example.everyoneassist.Utils.DebugLog;
+import com.example.everyoneassist.Utils.HttpPostRequestUtils;
+import com.example.everyoneassist.View.MyListView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.util.DensityUtil;
+import org.xutils.x;
+
+import java.util.HashMap;
+import java.util.List;
 
 
-public class ReceivingFragment extends Fragment implements LocationSource, AMapLocationListener {
+public class ReceivingFragment extends Fragment implements LocationSource, AMapLocationListener, HttpPostRequestUtils.HttpPostRequestCallback, View.OnClickListener {
     public ReceivingFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment ReceivingFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ReceivingFragment newInstance() {
         ReceivingFragment fragment = new ReceivingFragment();
         return fragment;
@@ -45,26 +60,43 @@ public class ReceivingFragment extends Fragment implements LocationSource, AMapL
     }
 
     private MapView d2map;
-    private ListView receiving_listview;
+    private MyListView receiving_listview;
     private ReceivingAdapter receivingAdapter;
+
+    private AMap aMap;
+
+    private TextView type, mode;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_receiving, container, false);
         d2map = (MapView) view.findViewById(R.id.d2map);
 
-        receiving_listview = (ListView) view.findViewById(R.id.receiving_listview);
-        receivingAdapter = new ReceivingAdapter(getActivity());
-        receiving_listview.setAdapter(receivingAdapter);
+        type = (TextView) view.findViewById(R.id.type);
+        mode = (TextView) view.findViewById(R.id.mode);
+        type.setOnClickListener(this);
+        mode.setOnClickListener(this);
+
+        receiving_listview = (MyListView) view.findViewById(R.id.receiving_listview);
+        receiving_listview.setbottom(DensityUtil.dip2px(15));
 
         d2map.onCreate(savedInstanceState);// 此方法必须重写
-        AMap aMap = d2map.getMap();
-        aMap.setTrafficEnabled(true);// 显示实时交通状况
-        aMap.setMyLocationEnabled(true);
-        aMap.setLocationSource(this);
+        aMap = d2map.getMap();
+        MyLocationStyle myLocationStyle = new MyLocationStyle();
+//        myLocationStyle.myLocationIcon(BitmapDescriptorFactory.fromResource(R.mipmap.location));
+        myLocationStyle.myLocationIcon(BitmapDescriptorFactory.fromResource(R.mipmap.location_marker));// 设置小蓝点的图标
+        myLocationStyle.strokeColor(Color.TRANSPARENT);// 设置圆形的边框颜色
+        myLocationStyle.radiusFillColor(Color.argb(0, 0, 0, 0));// 设置圆形的填充颜色
+        // myLocationStyle.anchor(int,int)//设置小蓝点的锚点
+        myLocationStyle.strokeWidth(1.0f);// 设置圆形的边框粗细
+        aMap.setMyLocationStyle(myLocationStyle);
+        aMap.getUiSettings().setMyLocationButtonEnabled(true);
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(20));
         //地图模式可选类型：MAP_TYPE_NORMAL,MAP_TYPE_SATELLITE,MAP_TYPE_NIGHT
         aMap.setMapType(AMap.MAP_TYPE_NORMAL);
-
+        aMap.setTrafficEnabled(true);// 显示实时交通状况
+        aMap.setLocationSource(this);
+        aMap.setMyLocationEnabled(true);
         return view;
     }
 
@@ -86,20 +118,12 @@ public class ReceivingFragment extends Fragment implements LocationSource, AMapL
     public void activate(OnLocationChangedListener listener) {
         mListener = listener;
         if (mlocationClient == null) {
-            //初始化定位
             mlocationClient = new AMapLocationClient(getActivity());
-            //初始化定位参数
             mLocationOption = new AMapLocationClientOption();
-            //设置定位回调监听
             mlocationClient.setLocationListener(this);
-            //设置为高精度定位模式
             mLocationOption.setLocationMode(AMapLocationMode.Hight_Accuracy);
-            //设置定位参数
+            mLocationOption.setInterval(2000);
             mlocationClient.setLocationOption(mLocationOption);
-            // 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
-            // 注意设置合适的定位时间的间隔（最小间隔支持为2000ms），并且在合适时间调用stopLocation()方法来取消定位请求
-            // 在定位结束后，在合适的生命周期调用onDestroy()方法
-            // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
             mlocationClient.startLocation();//启动定位
         }
     }
@@ -118,10 +142,12 @@ public class ReceivingFragment extends Fragment implements LocationSource, AMapL
     public void onLocationChanged(AMapLocation aMapLocation) {
         if (mListener != null && aMapLocation != null) {
             if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
+                mlocationClient.stopLocation();
                 mListener.onLocationChanged(aMapLocation);// 显示系统小蓝点
+                getdemand(aMapLocation.getLatitude(), aMapLocation.getLongitude());
             } else {
-                String errText = "定位失败," + aMapLocation.getErrorCode()+ ": " + aMapLocation.getErrorInfo();
-                Log.e("AmapErr",errText);
+                String errText = "定位失败," + aMapLocation.getErrorCode() + ": " + aMapLocation.getErrorInfo();
+                DebugLog.e("AmapErr", errText);
             }
         }
     }
@@ -130,8 +156,84 @@ public class ReceivingFragment extends Fragment implements LocationSource, AMapL
     public void onDestroy() {
         super.onDestroy();
         d2map.onDestroy();
-        if(null != mlocationClient){
+        if (null != mlocationClient) {
             mlocationClient.onDestroy();
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        d2map.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        d2map.onPause();
+        deactivate();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        d2map.onSaveInstanceState(outState);
+    }
+
+    private final String METHOD_DEMAND = "demand_list";
+
+    public void getdemand(double user_lat, double user_lon) {
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("act", METHOD_DEMAND);
+        map.put("category_id", "7");
+        map.put("user_lat", user_lat + "");
+        map.put("user_lon", user_lon + "");
+        map.put("server_type", "1");
+        HttpPostRequestUtils.getInstance(this).Post(map);
+    }
+
+    private List<Demand> demandList;
+
+    @Override
+    public void Success(String method, JSONObject json) throws JSONException {
+        if (METHOD_DEMAND.equals(method)) {
+            demandList = JSON.parseArray(json.getString("data"), Demand.class);
+            receivingAdapter = new ReceivingAdapter(getActivity(), demandList);
+            receiving_listview.setAdapter(receivingAdapter);
+        }
+    }
+
+    @Override
+    public void Fail(String method, String error) {
+        if (x.isDebug())
+            Toast.makeText(getActivity(), method + " ： " + error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.type:
+
+                break;
+            case R.id.mode:
+
+                break;
+        }
+    }
+
+    public void add(List<Demand> demandList){
+
+        for (Demand demand : demandList){
+            float lat = Float.valueOf(demand.getServer_lat());
+            float lon = Float.valueOf(demand.getServer_lon());
+            MarkerOptions mo = new MarkerOptions();
+            mo.anchor(lat, lon);
+
+            aMap.addMarker(mo);
+        }
+
+
+    }
+
+
 }

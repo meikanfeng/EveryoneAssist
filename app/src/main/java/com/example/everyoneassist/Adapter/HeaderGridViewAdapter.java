@@ -20,6 +20,21 @@ public class HeaderGridViewAdapter extends BaseAdapter {
 
     private String[] item;
     private Context context;
+    private int max = 0;
+
+    public HeaderGridViewAdapter(Context context, List<HomeCategory> items, int max) {
+        this.context = context;
+        this.max = max;
+        if (items == null) {
+            this.item = context.getResources().getStringArray(R.array.need_item);
+            return;
+        }
+        this.item = new String[items.size()];
+        for (int i = 0; i < items.size(); i ++){
+            this.item[i] = items.get(i).getCat_name();
+        }
+    }
+
     public HeaderGridViewAdapter(Context context, List<HomeCategory> items) {
         this.context = context;
         if (items == null) {
@@ -32,8 +47,15 @@ public class HeaderGridViewAdapter extends BaseAdapter {
         }
     }
 
+    public HeaderGridViewAdapter(Context context, String[] item) {
+        this.context = context;
+        this.item = item;
+    }
+
     @Override
     public int getCount() {
+        if (max != 0)
+            if (item.length > max) return max;
         return item.length;
     }
 

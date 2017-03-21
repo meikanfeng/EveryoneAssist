@@ -75,6 +75,7 @@ public class EditSkillActivity extends BaseActivity
     private DialogShowUtils dsu;//dialog
 
     private boolean first;
+    private int REQUEST_NEEDTYPE_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +125,7 @@ public class EditSkillActivity extends BaseActivity
         skill_price = (EditText) this.findViewById(R.id.skill_price);
 
         skill_pay.setOnClickListener(this);
+        skill_type.setOnClickListener(this);
         skill_type.setText("技能类型：" + skill_types);
     }
 
@@ -137,15 +139,22 @@ public class EditSkillActivity extends BaseActivity
         else view.setSelected(true);
     }
 
+    private Intent intent;
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.skill_type:
+                intent = new Intent(this, AddSkillListActivity.class);
+                intent.putExtra("start","1");
+                startActivityForResult(intent, REQUEST_NEEDTYPE_CODE);
+                break;
             case R.id.skill_pay:
                 if (checkparam())
                     Addskill();
                 break;
             case R.id.camera:
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 imagefile = new File(Constant.getAppPath(Constant.IMAGE_PATH + "/original") + "/" + System.currentTimeMillis() + ".jpg");
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagefile));
                 startActivityForResult(intent, ACTION_IMAGE_CAPTURE_REQUEST);

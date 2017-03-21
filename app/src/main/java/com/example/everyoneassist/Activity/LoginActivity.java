@@ -15,6 +15,7 @@ import com.example.everyoneassist.R;
 import com.example.everyoneassist.Utils.AppUtils;
 import com.example.everyoneassist.Utils.HttpPostRequestUtils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -92,8 +93,8 @@ public class LoginActivity extends BaseActivity implements HttpPostRequestUtils.
     }
 
     @Override
-    public void Success(String method, JSONObject json) {
-        shared.edit().putString("username",phones).commit();
+    public void Success(String method, JSONObject json) throws JSONException {
+        shared.edit().putString("username",phones).putString("user_id",json.getJSONObject("data").getString("user_id")).commit();
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }

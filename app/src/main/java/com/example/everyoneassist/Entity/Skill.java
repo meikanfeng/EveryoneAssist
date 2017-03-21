@@ -28,11 +28,13 @@ public class Skill {
     }
 
     private String skill_id;
-    private int category_id;
+    private String category_id;
     private String user_id;
-    private int server_name;
+    private String server_lon;
+    private String server_lat;
+    private String server_name;
     private String server_time;
-    private int status;
+    private String status;
     private String skill_info;
     private String skill_photo;
     private List<String> skill_photos;
@@ -65,6 +67,22 @@ public class Skill {
         }
     }
 
+    public String getServer_lon() {
+        return server_lon;
+    }
+
+    public void setServer_lon(String server_lon) {
+        this.server_lon = server_lon;
+    }
+
+    public String getServer_lat() {
+        return server_lat;
+    }
+
+    public void setServer_lat(String server_lat) {
+        this.server_lat = server_lat;
+    }
+
     public String getSkill_id() {
         return skill_id;
     }
@@ -73,11 +91,11 @@ public class Skill {
         this.skill_id = skill_id;
     }
 
-    public int getCategory_id() {
+    public String getCategory_id() {
         return category_id;
     }
 
-    public void setCategory_id(int category_id) {
+    public void setCategory_id(String category_id) {
         this.category_id = category_id;
     }
 
@@ -89,11 +107,11 @@ public class Skill {
         this.user_id = user_id;
     }
 
-    public int getServer_name() {
+    public String getServer_name() {
         return server_name;
     }
 
-    public void setServer_name(int server_name) {
+    public void setServer_name(String server_name) {
         this.server_name = server_name;
     }
 
@@ -105,11 +123,11 @@ public class Skill {
         this.server_time = server_time;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

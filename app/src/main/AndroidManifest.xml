@@ -14,6 +14,15 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 用于申请调用A-GPS模块 -->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <!-- 用于申请获取蓝牙信息进行室内定位 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:name=".MyApplication"
@@ -25,6 +34,8 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="8c352b31f8a9c4b0d5f031999fdb3c91" />
+
+        <service android:name="com.amap.api.location.APSService" />
 
         <activity
             android:name=".Activity.MainActivity"
@@ -57,7 +68,9 @@
         <activity android:name=".Activity.SkillManagerActivity" />
         <activity android:name=".Activity.AddSkillListActivity" />
         <activity android:name=".Activity.AtWillBuyActivity" />
-        <activity android:name=".Activity.ReleaseNeedActivity"></activity>
+        <activity android:name=".Activity.ReleaseNeedActivity" />
+        <activity android:name=".Activity.MyInfoActivity" />
+        <activity android:name=".Activity.SingleServerActivity"></activity>
     </application>
 
 </manifest>

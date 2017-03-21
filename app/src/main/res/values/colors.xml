@@ -17,6 +17,6 @@
     <color name="orange">#f59803</color>
     <color name="auth_green">#33b16a</color>
 
-
+    <color name="white_transparent">#66FFFFFF</color>
 
 </resources>

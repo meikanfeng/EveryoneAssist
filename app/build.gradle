@@ -27,11 +27,12 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
-    testCompile 'junit:junit:4.12'
     compile 'com.amap.api:map2d:3.0.0'
     compile 'com.amap.api:location:3.2.1'
     compile 'com.amap.api:search:3.6.1'
     compile 'org.xutils:xutils:3.3.42'
     compile 'com.alibaba:fastjson:1.2.24'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha2'
+    testCompile 'junit:junit:4.12'
 }

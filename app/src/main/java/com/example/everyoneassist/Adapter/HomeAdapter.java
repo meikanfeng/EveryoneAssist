@@ -85,25 +85,35 @@ public class HomeAdapter extends BaseAdapter {
 
         Skill skill = skill_list.get(position);
 //        x.image().bind(viewHolder.homeitem_avatar, skill.getUser_photo(), MyApplication.io);
-        ImageLoader.getInstance().displayImage(skill.getUser_photo(), viewHolder.homeitem_avatar);
+        if (skill.getUser_photo().endsWith(".png") || skill.getUser_photo().endsWith(".jpg") || skill.getUser_photo().endsWith(".jpeg"))
+            ImageLoader.getInstance().displayImage(skill.getUser_photo(), viewHolder.homeitem_avatar);
+        else viewHolder.homeitem_avatar.setImageResource(R.mipmap.home_07);
         viewHolder.homeitem_name.setText(skill.getServer_name()+"");
         viewHolder.homeitem_works.setText(skill.getCategory_id()+"");
         viewHolder.homeitem_time.setText(TimeUtils.getTime_difference(skill.getServer_time()) + "前");
         viewHolder.homeitem_text.setText(skill.getSkill_info());
-//        viewHolder.homeitem_zan.setText(skill.getSkill_info());
 
         List<String> strlist = skill.getSkill_photos();
         if (strlist != null && strlist.size() < 1)
             viewHolder.imagelayout.setVisibility(View.GONE);
         else if (strlist != null && strlist.size() < 2) {
+            viewHolder.imagelayout.setVisibility(View.VISIBLE);
             x.image().bind(viewHolder.homeitem_image1, strlist.get(0));
+            viewHolder.homeitem_image1.setVisibility(View.VISIBLE);
             viewHolder.homeitem_image2.setVisibility(View.INVISIBLE);
             viewHolder.homeitem_image3.setVisibility(View.INVISIBLE);
         }else if (strlist != null && strlist.size() < 3) {
+            viewHolder.imagelayout.setVisibility(View.VISIBLE);
+            viewHolder.homeitem_image1.setVisibility(View.VISIBLE);
+            viewHolder.homeitem_image2.setVisibility(View.VISIBLE);
             x.image().bind(viewHolder.homeitem_image1, strlist.get(0), MyApplication.io);
             x.image().bind(viewHolder.homeitem_image2, strlist.get(1), MyApplication.io);
             viewHolder.homeitem_image3.setVisibility(View.INVISIBLE);
         }else {
+            viewHolder.homeitem_image1.setVisibility(View.VISIBLE);
+            viewHolder.homeitem_image2.setVisibility(View.VISIBLE);
+            viewHolder.homeitem_image2.setVisibility(View.VISIBLE);
+            viewHolder.imagelayout.setVisibility(View.VISIBLE);
             x.image().bind(viewHolder.homeitem_image1, strlist.get(0), MyApplication.io);
             x.image().bind(viewHolder.homeitem_image2, strlist.get(1), MyApplication.io);
             x.image().bind(viewHolder.homeitem_image2, strlist.get(2), MyApplication.io);

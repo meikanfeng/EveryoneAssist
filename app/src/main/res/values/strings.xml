@@ -81,6 +81,11 @@
         <item>线上服务</item>
         <item>邮寄</item>
     </string-array>
+    <string-array name="server_sex">
+        <item>不限</item>
+        <item>男</item>
+        <item>女</item>
+    </string-array>
     <string-array name="service_time">
         <item>周一</item>
         <item>周二</item>
@@ -89,6 +94,11 @@
         <item>周五</item>
         <item>周六</item>
         <item>周日</item>
+    </string-array>
+
+    <string-array name="service_validity">
+        <item>七天</item>
+        <item>一天</item>
     </string-array>
 
 

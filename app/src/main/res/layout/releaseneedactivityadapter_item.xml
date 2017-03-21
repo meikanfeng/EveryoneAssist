@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/server_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="需求有效期"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_normal" />
+
+    <com.example.everyoneassist.View.MyGridView
+        android:id="@+id/server_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:horizontalSpacing="15dp"
+        android:numColumns="4"
+        android:choiceMode="multipleChoice"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:verticalSpacing="15dp" />
+
+</LinearLayout>

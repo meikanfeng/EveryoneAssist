@@ -1,6 +1,7 @@
 package com.example.everyoneassist.View;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -51,11 +52,16 @@ public class MyListView extends ListView {
         this.context = context;
 
         footer = new TextView(context);
+        footer.setBackgroundColor(Color.WHITE);
         footer.setText("------这是底线------");
         footer.setGravity(Gravity.CENTER);
         addFooterView(footer);
     }
 
+    /**
+     * 底部的下边内边距
+     * @param bottom    下内边距  px
+     */
     public void setbottom(int bottom){
         footer.setPadding(10,10,10,bottom);
     }

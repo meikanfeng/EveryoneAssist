@@ -8,9 +8,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.everyoneassist.Activity.MyCollectActivity;
+import com.example.everyoneassist.Activity.MyInfoActivity;
 import com.example.everyoneassist.Activity.MyWalletActivity;
 import com.example.everyoneassist.Activity.PersonAuthActivity;
 import com.example.everyoneassist.Activity.SkillManagerActivity;
@@ -49,6 +51,7 @@ public class MeFragment extends Fragment implements View.OnClickListener {
     }
 
     private TextView[] textviews = new TextView[8];//my_order, demand_manager, skill_manager, my_wallet, system_setting, user_manual, my_collect, person_auth;
+    private LinearLayout user;
 
     private void initView(View view) {
         textviews[0] = (TextView) view.findViewById(R.id.my_order);
@@ -62,6 +65,8 @@ public class MeFragment extends Fragment implements View.OnClickListener {
         for (TextView textview : textviews){
             textview.setOnClickListener(this);
         }
+        user = (LinearLayout) view.findViewById(R.id.user);
+        user.setOnClickListener(this);
     }
 
 
@@ -79,6 +84,9 @@ public class MeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.user:
+                startActivity(new Intent(getActivity(), MyInfoActivity.class));
+                break;
             case R.id.my_order:
 
                 break;

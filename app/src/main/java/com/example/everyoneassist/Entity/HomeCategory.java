@@ -1,5 +1,7 @@
 package com.example.everyoneassist.Entity;
 
+import java.util.List;
+
 /**
  * Created by fengm on 2017-3-10.
  */
@@ -20,7 +22,15 @@ public class HomeCategory {
     private String is_show;
     private String grade;
     private String filter_attr;
+    private List<HomeCategory> child;
 
+    public List<HomeCategory> getChild() {
+        return child;
+    }
+
+    public void setChild(List<HomeCategory> child) {
+        this.child = child;
+    }
 
     public String getCat_id() {
         return cat_id;
