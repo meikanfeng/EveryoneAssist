@@ -2,7 +2,6 @@ package com.example.everyoneassist.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.icu.text.NumberFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import com.example.everyoneassist.Utils.HttpPostRequestUtils;
 import com.example.everyoneassist.Utils.TimeUtils;
 import com.example.everyoneassist.View.MyHorizontalScrollView;
 
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
 
@@ -80,20 +80,16 @@ public class SkillAdapter extends BaseAdapter implements View.OnClickListener {
             viewholder.skill_time = (TextView) convertView.findViewById(R.id.skill_time);
             viewholder.skill_content = (TextView) convertView.findViewById(R.id.skill_content);
             convertView.setTag(viewholder);
-        } else {
-            viewholder = (ViewHolder) convertView.getTag();
-        }
+        } else viewholder = (ViewHolder) convertView.getTag();
 
         Skill skill = skills.get(position);
-
         viewholder.skill_title.setText(skill.getServer_name());
-        if ("0".equals(skill.getStatus()))
-            viewholder.skill_status.setText("等待审核");
+        if ("0".equals(skill.getStatus())) viewholder.skill_status.setText("等待审核");
         else viewholder.skill_status.setText("审核通过");
         viewholder.skill_lx.setText(skill.getServer_name());
         viewholder.skill_type.setText(skill.getServer_name());
 
-        viewholder.skill_price.setText(Double.valueOf(skill.getSkill_price()) + "元");
+        viewholder.skill_price.setText(NumberFormat.getInstance().format(Double.valueOf(skill.getSkill_price())) + "元");
 
         String[] weeks = context.getResources().getStringArray(R.array.service_time);
         viewholder.skill_time.setText(weeks[Integer.valueOf(skill.getServer_time())]);
